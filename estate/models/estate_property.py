@@ -27,7 +27,7 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.uid)   
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     offer_ids = fields.One2many('estate.property.offer', 'property_id', copy=False)
-    best_price = fields.Float( string='Best Offer',default='0')
+    best_price = fields.Float( string='Best Offer', compute='_compute_best_price', default='0')
     active = fields.Boolean(default=True)
     state = fields.Selection(selection=[('new', 'New'), ('offer_received', 'Offer received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled'),])
 
@@ -41,8 +41,10 @@ class EstateProperty(models.Model):
         for record in (self):
             record.total_area = record.living_area + record.garden_area
     
-
-    
+    @api.depends('offer_ids')
+    def _compute_best_price(self):
+        for record in (self):
+            record.best_price = max( offer.price for offer in record.offer_ids)
 
 
 
