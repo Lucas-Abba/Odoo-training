@@ -37,6 +37,13 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - date.today()).days
 
 
+    # -------------------------------------------------------------------------
+    # ACTIONS
+    # -------------------------------------------------------------------------
+
+
+    #TODO change criteria of decide if an offer is refused of accepted
+
     def action_confirm_offer(self):
         for record in (self):
             if(record.property_id.buyer_id):
