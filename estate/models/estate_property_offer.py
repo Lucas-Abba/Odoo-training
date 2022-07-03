@@ -36,3 +36,21 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.validity = (record.date_deadline - date.today()).days
 
+
+    def action_confirm_offer(self):
+        for record in (self):
+            if(record.property_id.buyer_id):
+                print("An offer is already accepted")
+            else:
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.selling_price = record.price
+                record.status = 'accepted'
+        return True
+
+    def action_refuse_offer(self):
+        for record in (self):
+            if(record.status == 'accepted'):
+                print("This offer has been already Accepted")
+            else:
+                record.status = 'refused'
+        return True

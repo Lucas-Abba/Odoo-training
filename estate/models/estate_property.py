@@ -1,6 +1,5 @@
 from datetime import timedelta
-from email.policy import default
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -63,3 +62,25 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+
+    # -------------------------------------------------------------------------
+    # ACTIONS
+    # -------------------------------------------------------------------------
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state == 'cancelled' :
+                raise exceptions.UserError("Cancelled properties can't be sold.")
+            else:    
+                record.state = 'sold'
+            return True
+
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state == 'sold' :
+                raise exceptions.UserError("Sold properties can't be cancelled")
+            else:
+                record.state = 'cancelled'
+            return True
+
