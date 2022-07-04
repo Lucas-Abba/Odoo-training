@@ -46,8 +46,10 @@ class EstatePropertyOffer(models.Model):
 
     def action_confirm_offer(self):
         for record in (self):
-            if(record.property_id.buyer_id):
-                print("An offer is already accepted")
+            if record.status == 'accepted':
+                print("    This offer is already Accepted")
+            elif (record.property_id.buyer_id):
+                print("    An offer is already Accepted")
             else:
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
@@ -56,8 +58,10 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         for record in (self):
-            if(record.status == 'accepted'):
-                print("This offer has been already Accepted")
+            if record.status == 'refused':
+                print("    This offer is already Refused")
+            elif (record.status == 'accepted'):
+                print("    This offer has been already Accepted")
             else:
                 record.status = 'refused'
         return True
