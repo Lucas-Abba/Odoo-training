@@ -13,6 +13,11 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer( default='7', string='Validity(days)')
     date_deadline = fields.Date(compute='_compute_deadline', inverse='_inverse_deadline')
 
+    _sql_constraints = [
+    ('check_price', 'CHECK(price >= 0)',
+    'An offer price must be strictly positive'),
+    ]
+
 
 
     # -------------------------------------------------------------------------
