@@ -1,5 +1,7 @@
 from datetime import timedelta
 from odoo import fields, models, api, exceptions
+from odoo.exceptions import ValidationError
+from odoo.tools import float_compare, float_round
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -36,6 +38,12 @@ class EstateProperty(models.Model):
          ('check_selling_price', 'CHECK(selling_price > 0)',
          'A property selling price must be positive'),
     ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.offer_ids and float_compare(record.selling_price, (record.expected_price * 0.9), 2) == -1:
+                raise ValidationError("Selling price can't be lower than than $" + str(record.expected_price * 0.9))
 
 
 
