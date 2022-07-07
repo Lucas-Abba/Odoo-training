@@ -30,7 +30,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', copy=False)
     best_price = fields.Float( string='Best Offer', compute='_compute_best_price', default='0')
     active = fields.Boolean(default=True)
-    state = fields.Selection(selection=[('new', 'New'), ('offer_received', 'Offer received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled'),])
+    state = fields.Selection(selection=[('new', 'New'), ('offer_received', 'Offer received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled'),], default='new')
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price >= 0)',
