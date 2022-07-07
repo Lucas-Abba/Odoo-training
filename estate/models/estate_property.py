@@ -6,6 +6,7 @@ from odoo.tools import float_compare, float_round
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = 'property model'
+    _order = 'id desc'
 
     name = fields.Char(required=True, default="Unknown")
     tags_id = fields.Many2many('estate.property.tag')
