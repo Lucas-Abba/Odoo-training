@@ -1,3 +1,4 @@
+from email.policy import default
 from odoo import fields, models
 
 class EstatePropertyType(models.Model):
@@ -7,6 +8,7 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(required=True, default="Unknown")
     property_ids = fields.One2many('estate.property', 'property_type_id', readonly=True)
+    sequence = fields.Integer('Sequence', default=1, help='Used to order property types.')
 
     _sql_constraints = [
         ('type_name_uniq', 'unique (name)',
